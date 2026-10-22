@@ -237,7 +237,9 @@
           },
           {
             "name": "LineRenderer",
-            "scenes": [],
+            "scenes": [
+              "Assets/Scenes/ARLearningScene.unity"
+            ],
             "dependencyType": 0,
             "icon": null
           },
@@ -895,7 +897,9 @@
           },
           {
             "name": "MeshCollider",
-            "scenes": [],
+            "scenes": [
+              "Assets/Scenes/ARLearningScene.unity"
+            ],
             "dependencyType": 0,
             "icon": null
           },
