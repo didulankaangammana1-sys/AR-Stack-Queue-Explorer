@@ -17,7 +17,29 @@ public class ARPlacement : MonoBehaviour
 
     void Update()
     {
-        if (PlacedObject != null || Input.touchCount == 0)
+        if (PlacedObject != null ||
+            raycastManager == null ||
+            modelPrefab == null)
+            return;
+
+        Vector2 screenPosition;
+
+#if UNITY_EDITOR
+
+        // Computer mouse click
+        if (!Input.GetMouseButtonDown(0))
+            return;
+
+        if (EventSystem.current != null &&
+            EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        screenPosition = Input.mousePosition;
+
+#else
+
+        // Mobile screen touch
+        if (Input.touchCount == 0)
             return;
 
         Touch touch = Input.GetTouch(0);
@@ -26,12 +48,15 @@ public class ARPlacement : MonoBehaviour
             return;
 
         if (EventSystem.current != null &&
-            EventSystem.current.IsPointerOverGameObject(
-                touch.fingerId))
+            EventSystem.current.IsPointerOverGameObject(touch.fingerId))
             return;
 
+        screenPosition = touch.position;
+
+#endif
+
         if (raycastManager.Raycast(
-            touch.position,
+            screenPosition,
             hits,
             TrackableType.PlaneWithinPolygon))
         {
@@ -42,6 +67,12 @@ public class ARPlacement : MonoBehaviour
                 pose.position,
                 pose.rotation
             );
+
+            Debug.Log("Stack Model Placed Successfully!");
+        }
+        else
+        {
+            Debug.Log("No AR plane detected at click position");
         }
     }
 
